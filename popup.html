@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F1-F12 Key Blocker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="icon">⌨️</div>
+      <h1>F1-F12 Key Blocker</h1>
+    </div>
+    
+    <div class="status-section">
+      <div class="status-indicator">
+        <div id="statusDot" class="status-dot enabled"></div>
+        <span id="statusText" class="status-text">Function keys are blocked</span>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <div class="toggle-container">
+        <label class="toggle-switch">
+          <input type="checkbox" id="enableToggle" checked>
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label">Block F1-F12 keys</span>
+      </div>
+    </div>
+    
+    <div class="key-list">
+      <h3>Blocked Keys:</h3>
+      <div class="keys-grid">
+        <span class="key-item">F1</span>
+        <span class="key-item">F2</span>
+        <span class="key-item">F3</span>
+        <span class="key-item">F4</span>
+        <span class="key-item">F5</span>
+        <span class="key-item">F6</span>
+        <span class="key-item">F7</span>
+        <span class="key-item">F8</span>
+        <span class="key-item">F9</span>
+        <span class="key-item">F10</span>
+        <span class="key-item">F11</span>
+        <span class="key-item">F12</span>
+      </div>
+    </div>
+    
+    <div class="info-section">
+      <p class="info-text">
+        When enabled, this extension prevents the browser's default actions for F1-F12 keys, 
+        allowing you to use them for custom shortcuts in other applications.
+      </p>
+    </div>
+    
+    <div class="footer">
+      <div class="version" id="version">v1.0.0</div>
+      <button id="testButton" class="test-button">Test on this page</button>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

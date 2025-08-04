@@ -1,0 +1,31 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="56" fill="#667eea" stroke="#5a67d8" stroke-width="4"/>
+  
+  <!-- Keyboard base -->
+  <rect x="24" y="48" width="80" height="48" rx="6" fill="white" opacity="0.9"/>
+  
+  <!-- Function keys -->
+  <rect x="30" y="54" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="46" y="54" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="62" y="54" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="78" y="54" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="94" y="54" width="12" height="8" rx="2" fill="#667eea"/>
+  
+  <!-- Second row of keys -->
+  <rect x="30" y="66" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="46" y="66" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="62" y="66" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="78" y="66" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="94" y="66" width="12" height="8" rx="2" fill="#667eea"/>
+  
+  <!-- Third row of keys -->
+  <rect x="30" y="78" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="46" y="78" width="12" height="8" rx="2" fill="#667eea"/>
+  <rect x="62" y="78" width="20" height="8" rx="2" fill="#667eea"/>
+  <rect x="86" y="78" width="12" height="8" rx="2" fill="#667eea"/>
+  
+  <!-- Block symbol overlay -->
+  <circle cx="90" cy="40" r="16" fill="#dc3545"/>
+  <rect x="82" y="38" width="16" height="4" fill="white"/>
+</svg>
