@@ -40,8 +40,14 @@ class KeyBlockerBackground {
   }
 
   async onMessage(message, sender, sendResponse) {
+    console.log('Background received message:', message.type);
+    
     try {
       switch (message.type) {
+        case 'PING':
+          sendResponse({ success: true, message: 'pong' });
+          break;
+          
         case 'TOGGLE_KEY_BLOCKER':
           await this.toggleKeyBlocker(message.enabled);
           sendResponse({ success: true, enabled: message.enabled });
@@ -49,6 +55,7 @@ class KeyBlockerBackground {
           
         case 'GET_STATUS':
           const status = await this.getStatus();
+          console.log('Sending status response:', status);
           sendResponse(status);
           break;
           

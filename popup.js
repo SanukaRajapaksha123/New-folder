@@ -10,11 +10,40 @@ class KeyBlockerPopup {
 
   async init() {
     this.initializeElements();
+    
+    // Wait for background script to be ready
+    await this.waitForBackgroundScript();
+    
     await this.loadCurrentStatus();
     this.attachEventListeners();
     this.updateUI();
     
     console.log('Popup initialized');
+  }
+
+  async waitForBackgroundScript() {
+    // First check if Chrome runtime is available
+    if (typeof chrome === 'undefined' || !chrome.runtime) {
+      throw new Error('Chrome runtime not available');
+    }
+    
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    while (attempts < maxAttempts) {
+      try {
+        // Try a simple ping to see if background script is ready
+        await this.sendMessage({ type: 'PING' });
+        console.log('Background script is ready');
+        return;
+      } catch (error) {
+        attempts++;
+        console.log(`Background script not ready, attempt ${attempts}/${maxAttempts}:`, error.message);
+        await new Promise(resolve => setTimeout(resolve, 200));
+      }
+    }
+    
+    console.warn('Background script may not be fully ready, proceeding anyway');
   }
 
   initializeElements() {
@@ -40,6 +69,7 @@ class KeyBlockerPopup {
       
       if (response && typeof response.enabled !== 'undefined') {
         this.currentStatus = response;
+        console.log('Status loaded successfully:', this.currentStatus);
       } else {
         console.warn('Invalid response from background script:', response);
         // Use defaults
@@ -47,7 +77,18 @@ class KeyBlockerPopup {
       }
     } catch (error) {
       console.error('Error loading status:', error);
-      this.currentStatus = { enabled: true, version: '1.0.0' };
+      // Try to get status from storage directly as fallback
+      try {
+        const result = await chrome.storage.sync.get(['keyBlockerEnabled']);
+        this.currentStatus = {
+          enabled: result.keyBlockerEnabled !== false,
+          version: chrome.runtime.getManifest().version
+        };
+        console.log('Loaded status from storage fallback:', this.currentStatus);
+      } catch (storageError) {
+        console.error('Storage fallback also failed:', storageError);
+        this.currentStatus = { enabled: true, version: '1.0.0' };
+      }
     }
   }
 
@@ -214,8 +255,16 @@ class KeyBlockerPopup {
         return;
       }
 
+      // Add timeout to prevent hanging
+      const timeout = setTimeout(() => {
+        reject(new Error('Message timeout - background script may not be ready'));
+      }, 5000);
+
       chrome.runtime.sendMessage(message, (response) => {
+        clearTimeout(timeout);
+        
         if (chrome.runtime.lastError) {
+          console.error('Runtime error:', chrome.runtime.lastError);
           reject(new Error(chrome.runtime.lastError.message));
         } else {
           resolve(response);
@@ -242,7 +291,17 @@ document.head.appendChild(style);
 
 // Initialize popup when DOM is loaded
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => new KeyBlockerPopup());
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      new KeyBlockerPopup();
+    } catch (error) {
+      console.error('Failed to initialize popup:', error);
+    }
+  });
 } else {
-  new KeyBlockerPopup();
+  try {
+    new KeyBlockerPopup();
+  } catch (error) {
+    console.error('Failed to initialize popup:', error);
+  }
 }
